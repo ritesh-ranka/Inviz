@@ -1,0 +1,6 @@
+framework module Pods_Inviz {
+  umbrella header "Pods-Inviz-umbrella.h"
+
+  export *
+  module * { export * }
+}
