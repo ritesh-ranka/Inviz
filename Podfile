@@ -12,4 +12,5 @@ target 'Inviz' do
   pod 'Firebase/Firestore'
   pod 'SwiftyJSON'
   pod 'Alamofire'
+  pod 'Charts'
 end
