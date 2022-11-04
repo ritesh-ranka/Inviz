@@ -11,6 +11,7 @@ import UIKit
 
 class RegisterViewController: UIViewController {
     
+    @IBOutlet var gender: UITextField!
     @IBOutlet var submitButton: UIButton!
     @IBOutlet var email: UITextField!
     @IBOutlet var firstName: UITextField!
@@ -33,11 +34,16 @@ class RegisterViewController: UIViewController {
     // check the fields and validate that the data is correct. If correct return nil else return error message as a string
     func validateFields() -> String?{
         //check that all fields are filled in
-        if email.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
+        if gender.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
+            email.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
             firstName.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
             lastName.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
             password.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || rePassword.text?.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
             return "Please fill in all fields"
+        }
+        else if gender.text!.lowercased() != "m" && gender.text!.lowercased() != "f" && gender.text!.lowercased() != "o" {
+            print("\(gender.text!.lowercased())")
+            return "Please enter valid gender"
         }
         else if isValidEmail(email.text!) == false{
             return "Please enter valid email"
@@ -70,6 +76,7 @@ class RegisterViewController: UIViewController {
             // Create cleaned versions of the data
             let firstName = firstName.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             let lastName = lastName.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+            let gender = gender.text!.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
             let email = email.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             let password = password.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             
@@ -85,7 +92,7 @@ class RegisterViewController: UIViewController {
                     // User was created successfully, now store the first name and last name
                     let db = Firestore.firestore()
                     
-                    db.collection("users").addDocument(data: ["firstname":firstName, "lastname":lastName, "uid": result!.user.uid ]) { (error) in
+                    db.collection("users").addDocument(data: ["firstname":firstName, "lastname":lastName, "uid": result!.user.uid, "gender": gender]) { (error) in
                         
                         if error != nil {
                             // Show error message
@@ -95,7 +102,6 @@ class RegisterViewController: UIViewController {
                     
                     // Transition to the home screen
                     self.navigationController?.popToRootViewController(animated: true)
-                    //self.transitionToHome()
                 }
             }
         }

@@ -26,8 +26,8 @@ class APIMethods{
     static let functions = APIMethods()
     
     func fetchNotes() {
-            AF.request("https://invizin.herokuapp.com/fetch").response { response in
-        
+        AF.request("https://invizin.herokuapp.com/fetch").response { response in
+    
             if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
             
                 // Once the data is recieved pass it using the delegat protocol
@@ -37,8 +37,9 @@ class APIMethods{
         }
     }
     
-    func addNote(username: String, email: String, company: String, title: String, note: String, date: String) {
-        AF.request("https://invizin.herokuapp.com/form", method: .post,  encoding: URLEncoding.httpBody, headers: ["email":email, "username":username, "company":company, "title": title, "note": note, "date": date ]).responseJSON { (response) in
+    func addNote(username: String, email: String, gender: String, company: String, title: String, note: String, date: String) {
+        print(note)
+        AF.request("https://invizin.herokuapp.com/form", method: .post,  encoding: URLEncoding.httpBody, headers: ["email":email, "username":username, "gender":gender, "company":company, "title": title, "note": note, "date": date ]).responseJSON { (response) in
         }
     }
     
@@ -47,8 +48,8 @@ class APIMethods{
         }
     }
     
-    func updateNote(username: String, email: String, company: String, id: String, title: String, note: String, date: String) {
-        AF.request("https://invizin.herokuapp.com/update", method: .post,  encoding: URLEncoding.httpBody, headers: ["id": id, "email":email, "username":username, "company":company, "title": title, "note": note, "date": date ]).responseJSON { (response) in
+    func updateNote(username: String, email: String, gender: String, company: String, id: String, title: String, note: String, date: String) {
+        AF.request("https://invizin.herokuapp.com/update", method: .post,  encoding: URLEncoding.httpBody, headers: ["id": id, "email":email, "username":username, "gender":gender, "company":company, "title": title, "note": note, "date": date ]).responseJSON{ (response) in
         }
     }
     

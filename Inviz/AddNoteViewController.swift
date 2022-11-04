@@ -19,6 +19,7 @@ class AddNoteViewController: UIViewController {
     var firstName = ""
     var lastName = ""
     var email = ""
+    var gender = ""
     
     @IBOutlet weak var companyField: UITextField!
     @IBOutlet weak var titleField: UITextField!
@@ -48,6 +49,7 @@ class AddNoteViewController: UIViewController {
                     for document in querySnapshot!.documents {
                         self.lastName = (document.data()["lastname"] as? String ?? nil)!
                         self.firstName = (document.data()["firstname"] as? String ?? nil)!
+                        self.gender = (document.data()["gender"] as? String ?? nil)!
                         //print("\(firstName) => \(lastName)")
                         self.email = (Auth.auth().currentUser?.email ?? nil)!
                         //print("\(email)")
@@ -87,11 +89,11 @@ class AddNoteViewController: UIViewController {
         if noteField.text! != "" && titleField.text! != "" {
             if update == true {
                 
-                APIMethods.functions.updateNote(username: firstName+" "+lastName, email: email, company:companyField.text! , id: note._id, title: titleField.text!, note: noteField.text!, date: date)
+                APIMethods.functions.updateNote(username: firstName+" "+lastName, email: email, gender: gender, company:companyField.text! , id: note._id, title: titleField.text!, note: noteField.text!, date: date)
                 
             } else  {
                 
-                APIMethods.functions.addNote(username: firstName+" "+lastName, email: email, company: companyField.text!, title: titleField.text!, note: noteField.text!, date: date)
+                APIMethods.functions.addNote(username: firstName+" "+lastName, email: email, gender: gender, company: companyField.text!, title: titleField.text!, note: noteField.text!, date: date)
                 
             }
 

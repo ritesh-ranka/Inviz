@@ -13,7 +13,6 @@ class LoginViewController: UIViewController {
     @IBOutlet var login: UIButton!
     @IBOutlet var emailTextField: UITextField!
     @IBOutlet var passwordTextField: UITextField!
-    @IBOutlet var forgotPassword: UIButton!
     @IBOutlet var registerUser: UIButton!
     func showErrorMsg(errorMsg: String){
         let alert = UIAlertController(title: "Error", message: errorMsg, preferredStyle: .alert)
@@ -57,10 +56,7 @@ class LoginViewController: UIViewController {
         guard let sender = sender as? UIButton else {return}
         if sender == registerUser {
             segue.destination.navigationItem.title = "Register"
-        } else if sender == forgotPassword {
-            segue.destination.navigationItem.title = "Reset Password"
         }
-        
     }
 }
 

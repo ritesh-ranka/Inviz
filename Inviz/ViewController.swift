@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import SwiftyJSON
+import FirebaseAuth
+import Firebase
 
 // Custom protocol that parses the JSON and updated the arrray
 protocol DataDelegate {
@@ -14,6 +17,8 @@ protocol DataDelegate {
 
 class ViewController: UIViewController {
     
+    var userEmail = ""
+    
     @IBOutlet weak var tableView: UITableView!
     // Array of notes objects from the database
     var notesArray = [Notes]()
@@ -21,16 +26,20 @@ class ViewController: UIViewController {
     // Need to send some data to the next viewcontroller
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        // instantiate the AddViewController class
-        let vc = segue.destination as! AddNoteViewController
-        
-        // If we are updating a note, tell the addnotecontroller to update, and give position of item to update
-        if segue.identifier == "updateNoteSegue" {
-            // Give the reverse index (0 in the table view is the oldest item in database instead of newest)
-            vc.update = true
-            vc.isValidDelete = true
-            vc.note = notesArray[ (notesArray.count-1) - ((tableView.indexPathForSelectedRow)?.row ?? 0)]
+        //guard let vc = segue.destination as? AddNoteViewController else {return}
+        if let vc = segue.destination as? AddNoteViewController {
+            // If we are updating a note, tell the addnotecontroller to update, and give position of item to update
+            if segue.identifier == "updateNoteSegue" {
+                // Give the reverse index (0 in the table view is the oldest item in database instead of newest)
+                vc.update = true
+                vc.isValidDelete = true
+                vc.note = notesArray[ (notesArray.count-1) - ((tableView.indexPathForSelectedRow)?.row ?? 0)]
+            }
         }
+        if let vc = segue.destination as? ShowInfoViewController {
+                vc.notes = notesArray[ (notesArray.count-1) - ((tableView.indexPathForSelectedRow)?.row ?? 0)]
+        }
+        
     }
     
     override func viewDidLoad() {
@@ -40,6 +49,19 @@ class ViewController: UIViewController {
         APIMethods.functions.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        let db = Firestore.firestore()
+        let users = db.collection("users")
+        let query = users.whereField("uid", isEqualTo: userID)
+        query.getDocuments() { [self] (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                        //print("\(firstName) => \(lastName)")
+                    self.userEmail = (Auth.auth().currentUser?.email ?? nil)!
+                        //print("\(email)")
+                }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -58,6 +80,20 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        print("\(indexPath.row)")
+        let currentUser = notesArray[(notesArray.count-1) - ((tableView.indexPathForSelectedRow)?.row ?? 0)].email
+//        print("\(currentUser), \(userEmail)")
+        // instantiate the AddViewController class
+        if currentUser != userEmail {
+            performSegue(withIdentifier: "showInfoSegue", sender: nil)
+            return
+        }
+        else {
+            performSegue(withIdentifier: "updateNoteSegue", sender: nil)
+            return
+        }
+    }
     // Don't need a didselectrow function because it uses a segue through stroyboards instead
     // Return a custom cell height of 85
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -93,14 +129,17 @@ extension ViewController: UITableViewDataSource {
         cell.timeLabel.text = notesArray[arrayIndexReverse].date
         cell.titleLabel.text = notesArray[arrayIndexReverse].company+" - "+notesArray[arrayIndexReverse].title
         let str = notesArray[arrayIndexReverse].note
-        if str.count >= 40 {
-            let index = str.index(str.startIndex, offsetBy: 40)
-            cell.noteLabel.text = str[..<index] + "..."
+        if str.count > 0 {
+            if str.count >= 40 {
+                let index = str.index(str.startIndex, offsetBy: 40)
+                cell.noteLabel.text = str[..<index] + "..."
+            }else{
+                cell.noteLabel.text = str
+            }
+            
         }else{
-            cell.noteLabel.text = str
+            cell.noteLabel.text = "Editable Interview Exp."
         }
-        
-        
         return cell
     }
 }
