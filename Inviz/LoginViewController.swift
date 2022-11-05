@@ -20,6 +20,7 @@ class LoginViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     @IBAction func loginButton(_ sender: Any) {
+        self.login.isEnabled = false
         // Create cleaned versions of the text field
         let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -28,6 +29,7 @@ class LoginViewController: UIViewController {
         Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
             
             if error != nil {
+                self.login.isEnabled = true
                 // Couldn't sign in
                 self.showErrorMsg(errorMsg: error!.localizedDescription)
                 return

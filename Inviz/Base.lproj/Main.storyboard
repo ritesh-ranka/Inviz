@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ErT-VY-v4o">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ErT-VY-v4o">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -52,7 +52,7 @@
         <!--View Controller-->
         <scene sceneID="P8E-fO-ObI">
             <objects>
-                <viewController id="nkU-F8-vKW" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Welcome" id="nkU-F8-vKW" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6x8-Ls-8bM">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -523,6 +523,17 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Inviz" id="FEC-r0-FUZ" colorLabel="IBBuiltInLabel-Blue">
+                        <barButtonItem key="leftBarButtonItem" id="mlV-XK-xt4">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="HHX-Up-Da6">
+                                <rect key="frame" x="16" y="5" width="86" height="34.333333333333336"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Logout"/>
+                                <connections>
+                                    <action selector="logOut:" destination="hkN-gu-3PD" eventType="touchUpInside" id="Z7Y-x7-dKW"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Add" id="uA9-q8-GKw">
                             <connections>
                                 <segue destination="Fib-F8-XWY" kind="show" identifier="addNoteSegue" id="2NB-bL-v0n"/>
@@ -664,7 +675,7 @@
         <!--Navigation Controller-->
         <scene sceneID="ikM-nw-eeH">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ErT-VY-v4o" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="firstNavController" automaticallyAdjustsScrollViewInsets="NO" id="ErT-VY-v4o" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="2Xn-NL-gs5">
                         <rect key="frame" x="0.0" y="47" width="390" height="44"/>
@@ -764,6 +775,7 @@
                     <connections>
                         <outlet property="companyKey" destination="XaU-KP-dRl" id="fbr-F7-ZcO"/>
                         <outlet property="companyName" destination="9iR-30-BaG" id="uR7-JX-S0s"/>
+                        <outlet property="login" destination="oVh-pZ-QBx" id="hxG-gQ-BrL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gx8-HN-s0T" sceneMemberID="firstResponder"/>

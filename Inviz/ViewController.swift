@@ -42,6 +42,33 @@ class ViewController: UIViewController {
         
     }
     
+    func showConfirmLogoutMsg(){
+        let alert = UIAlertController(title: "Confirm", message: "Are you sure you want to logout?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default){ (action) -> Void in})
+        let ok = UIAlertAction(title: "Yes", style: .default, handler: { [self] (action) -> Void in
+            performLogout()
+        })
+
+        alert.addAction(ok)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func performLogout(){
+        do {
+            try Auth.auth().signOut()
+            navigationController?.popToRootViewController(animated: true)
+            
+        }
+        catch let err{
+           print(err)
+        }
+    }
+    
+    @IBAction func logOut(_ sender: Any) {
+            // Create audio player object
+            showConfirmLogoutMsg()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // the delegate is the class that handles the API requests
